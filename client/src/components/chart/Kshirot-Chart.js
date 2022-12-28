@@ -32,67 +32,6 @@ export const options = {
 		},
 	},
 };
-/*
-geting gdud from the server
-
-the data that gets from the server -> carDatas.find({gdud:{$exists:true},
-{gdud:foundUser.gdud}, (er,foundCars) =>{
-.
-.
-.
-#sending foundCars.carNumber , foundCars.kshirot, gdud , foundCars.makat
-geting
-const carNumber = foundCars.carNumber
-const makat = foundCars.makat
-const kshirot = foundCars.kshirot
-makat.sort();
- function removeDuplicates(arr) {
-    return arr.filter((item, index) => arr.indexOf(item) === index);}
-    
-makats = removeDuplicates(makat)
-
-doing the same in the backend to get an array of all the makatim
-// backend
-const makatAvial = makats.map((mk) =>{
-carDatas.find ({gdud:foundUser.gdud},{makat:mk},{kshirot:1},
-  (error,foundAvi) =>{
-    if error {
-      console.log(error)
-    } else {
-      return foundAvi.length
-    }
-  })
-})
-const makatOverall = makats.map((mk) =>{
-carDatas.find ({gdud:foundUser.gdud},{makat:mk},
-  (error,foundOver) =>{
-    if error {
-      console.log(error)
-    } else {
-      return foundOver.length
-    }
-  })
-})
-const makatP = []
-for (let index = 0; index < makatAvial.length; index++) {
-  makatP.push(Math.floor((makatAvial[index]/makatOverall[index])*100));
-}
-push makatP
-
-const avialabel = kshirot.filter((kashir) => kashir === 1 )
-const avialabelP = Math.floor((avialbel.length/kshirot.length)*100)
-
-
-
-
-if meneger the data that will be passed will be allCars from
-carDatas.find({gdud:{$exists:true}, (err,allCars) =>{
-  .
-  .
-  .
-}}
-and gdud parmeter will be an array
-*/
 
 const labels = /* makats.map( makatNum => num.toString( makatNum)) */ [
 	"131585",

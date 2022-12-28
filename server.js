@@ -1,4 +1,4 @@
-// requiring modules
+// * requiring modules
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -6,18 +6,20 @@ const { application } = require("express");
 const { json } = require("body-parser");
 const Axios = require("axios").default;
 
-// mongoose database setup
+// * mongoose database setup
 mongoose.connect("mongodb://127.0.0.1/finalProjectDB", {
 	useNewUrlParser: true,
 });
 
-//setting modules
+// * setting modules
 mongoose.set("strictQuery", false);
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public")); //create a public folder put inside every static page (CSS and pure html)
 
-//setting a Schema for the database
+// ----------------------------------- database handeling -----------------------------------------------------------------------------------
+
+// * setting a Schema for the database
 
 const userSchema = new mongoose.Schema({
 	//settings
@@ -49,6 +51,12 @@ const User = mongoose.model("User", userSchema);
 //    isManager :
 // });
 
+//----------------------------------------- helping functions --------------------------------------------------------------------------------------------
+
+function removeDuplicates(arr) {
+	return arr.filter((item, index) => arr.indexOf(item) === index);
+}
+
 async function fetchText(urlA) {
 	try {
 		const resp = await Axios.post(urlA);
@@ -62,7 +70,7 @@ async function fetchText(urlA) {
 	}
 }
 
-//---------------------------------------- login page --------------------------------------------------
+//* ---------------------------------------- login page --------------------------------------------------
 
 app
 	.route("/login/:id")
@@ -78,7 +86,7 @@ app
 		});
 	});
 
-//---------------------------------------- addCar page --------------------------------------------------
+// * ---------------------------------------- addCar page --------------------------------------------------
 
 app
 	.route("/addcar")
@@ -89,36 +97,92 @@ app
 		console.log(req.cache);
 	});
 
-//---------------------------------------- landing no menger page --------------------------------------------------
+//*---------------------------------------- Dashboard no menger page --------------------------------------------------
 
-//------------------------------------------ landing ismaneger page --------------------------------------------------
+app
+	.route("/kashirot/:gdud/:makat/:kashir")
 
-// app
-// 	.route("/kashir/:gdud/:makat/:kashir")
+	.get(function (req, res) {
+		carData.find({ gdud: req.params.gdud }, (er, foundKashir) => {
+			if (er) {
+				console.log(er);
+			} else {
+				const makatOverAll = foundKashir.map((obj, index) => {
+					if (foundKashir[index].makat == req.params.makat) {
+						return foundKashir[index].makat;
+					} else {
+						console.log(foundKashir[index].makat);
+					}
+				});
 
-// .get(function (req, res) {
-// 	carData.find(
-// 		{ gdud: req.params.gdud },
-// 		{ makat: req.params.makat },
-// 		{ kshirot: req.params.kashir },
-// 		(er, foundKashir) => {
-// 			if (er) {
-// 				console.log(er);
-// 			} else {
-// 				console.log(foundKashir);
-// 				res.send(
-// 					foundKashir.map((ele, index) => {
-// 						return foundKashir[index].makat;
-// 					})
-// 				);
-// 			}
-// 		}
-// 	);
-// });
+				// console.log(makatOverAll);
+
+				// * --------------------------------------- getting the kshirot of the makat -----------------------------------------------
+
+				const makatAv = foundKashir.map((obj, index) => {
+					if (
+						foundKashir[index].makat == req.params.makat &&
+						foundKashir[index].kshirot == req.params.kashir
+					) {
+						return foundKashir[index].makat;
+					} else {
+						console.log(foundKashir[index].makat);
+					}
+				});
+				// console.log(makatAv);
+
+				// * ------------------------- removeing undefinded data ----------------------------------------------------
+
+				function removeUndefined(arr) {
+					return arr.filter((item, index) => item != undefined);
+				}
+
+				const makatOverAllRE = removeUndefined(makatOverAll);
+				const makatAvRE = removeUndefined(makatAv);
+
+				console.log(makatAvRE);
+				console.log(makatOverAllRE);
+				// ---------------------------- sending data --------------------------------------------------
+				res.send({
+					makatAvil: makatAvRE,
+					makatGdud: makatOverAllRE,
+				});
+
+				//  ! ------------------------------- alternative --------------------------------------------------------------
+
+				// 	carData.find({ gdud: req.params.gdud }, (er, foundKashir) => {
+				// 		if (er) {
+				// 			console.log(er);
+				// 		} else {
+				// 			carData.find(
+				// 				{
+				// 					gdud: req.params.gdud,
+				// 				},
+				// 				{ makat: req.params.makat },
+				// 				(err, found) => {
+				// 					if (err) {
+				// 						console.log(err);
+				// 					} else {
+				// 						console.log(req.params.gdud);
+				// 						console.log(req.params.makat);
+				// 						console.log(req.params.kashir);
+				// 						console.log(found.length);
+				// 						console.log(foundKashir.length);
+				// 						res.send({
+				// 							makatAvil: foundKashir.length,
+				// 							makatGdud: found.length,
+				// 						});
+				// 					}
+				// 				}
+				// 			);
+				// 			}
+			}
+		});
+	});
 
 app
 	.route("/:gdud")
-	// todo : to get kshirot i can try to run a reducer function on the data after doing map and changing it to num insted of string to  get the sum of the 1 and 0, and also i can use that to make the 0s 1s to get the over all length of the array (because i can't get its length with .length for some resone)
+
 	.get(function (req, res) {
 		carData.find({ gdud: req.params.gdud }, (err, foundCars) => {
 			if (err) {
@@ -126,18 +190,24 @@ app
 			} else {
 				// console.log(req.params.type);
 
+				// * checking if getting all the carnumber in the gdud
+
+				/*
+
 				console.log(
 					foundCars.map((ele, index) => {
 						return foundCars[index].carNumber;
 					})
 				);
+
+				*/
+
+				// ---------------------------------------------------------------------------------------------------------------------------
+
+				// * getting all the makats in the gdud
 				let makat = foundCars.map((ele, index) => {
 					return foundCars[index].makat;
 				});
-
-				function removeDuplicates(arr) {
-					return arr.filter((item, index) => arr.indexOf(item) === index);
-				}
 
 				const makatFilterdN = removeDuplicates(makat);
 				const makatFilterd = makatFilterdN.map((num) => {
@@ -146,11 +216,12 @@ app
 
 				// console.log(makatFilterd);
 
+				//* getting all the carnumber in the gdud
 				carNumbers = foundCars.map((ele, index) => {
 					return foundCars[index].carNumber;
 				});
 
-				allMakats = makatFilterd;
+				// * --------------------- sending data ------------------------------------------------------------------------------------------------------
 
 				res.send({
 					carNumbers: foundCars.map((ele, index) => {
@@ -166,13 +237,13 @@ app
 		});
 	});
 
-//------------------------------------------ landing ismaneger page --------------------------------------------------
+// ! ------------------------------------------  landing ismaneger page --------------------------------------------------
 
 app
 	.route("/")
 
 	.get(function (req, res) {});
-//---------------------------------------- running server --------------------------------------------------
+// * ---------------------------------------- running server --------------------------------------------------
 
 app.listen(5000, function () {
 	console.log("server is running at port 5000");

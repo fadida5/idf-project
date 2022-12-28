@@ -6,7 +6,7 @@ function Column(props) {
 			<tr>
 				<td>{props.items}</td>
 				<td>{props.carStatus}</td>
-			</tr>
+			</tr>		
 		</div>
 	);
 }

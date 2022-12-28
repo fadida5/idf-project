@@ -8,10 +8,12 @@ function Dashboard(props) {
 	const userData = props.user;
 	const history = useNavigate();
 
-	const [CarData, setCarData] = useState({});
+	// const [CarData, setCarData] = useState({});
 	const [CarNumbers, setCarNumbers] = useState({});
 	const [Makats, setAllMakats] = useState({});
 	const [AllKshirot, setAllKshirot] = useState({});
+	const [makatKashir, setMakatKashir] = useState({});
+	const [kshirotGdud, setKshirotGdud] = useState({});
 
 	function useCarDatas() {
 		let arg = "";
@@ -30,7 +32,7 @@ function Dashboard(props) {
 			.then((res) => res.json())
 			.then((item) => {
 				console.log(item);
-				setCarData(item);
+				// setCarData(item);
 				setCarNumbers(item.carNumbers);
 				setAllMakats(item.allMakats);
 				setAllKshirot(item.allKshirot);
@@ -44,7 +46,30 @@ function Dashboard(props) {
 		history("/add");
 	}
 
+	function useMakatKashir(gdud, makat, kashir) {
+		let url =
+			"http://localhost:5000/kashirot/" +
+			gdud +
+			"/" +
+			makat +
+			"/" +
+			kashir +
+			"";
+		fetch(url, {
+			method: "GET",
+			headers: { "Content-Type": "application.json" },
+		})
+			.then((result) => result.json())
+			.then((item) => {
+				setMakatKashir(item.makatAvil);
+				setKshirotGdud(item.makatGdud);
+				console.log(item.makatAvil);
+				console.log(item.makatGdud);
+			});
+	}
+
 	// useCarDatas();
+	// console.log(CarData.carNumber);
 
 	// console.log(CarData);
 
@@ -56,11 +81,11 @@ function Dashboard(props) {
 				) : null}
 			</div>
 			<div>
-				<KshirotTable
-					carNumber={CarNumbers}
-					kshirot={AllKshirot}
-					getCarNumberKshirot={useCarDatas}
-				/>
+				{/* <KshirotTable
+					// carNumber={CarNumbers}
+					// kshirot={AllKshirot}
+					// // getCarNumberKshirot={}
+				/> */}
 			</div>
 			<div>
 				<div /*will replace this with components when marging*/>
