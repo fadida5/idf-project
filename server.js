@@ -97,7 +97,7 @@ app
 		console.log(req.cache);
 	});
 
-//*---------------------------------------- Dashboard no menger page --------------------------------------------------
+//*---------------------------------------- Dashboard no menger page (kashirot) --------------------------------------------------
 
 app
 	.route("/kashirot/:gdud/:makat/:kashir")
@@ -111,7 +111,7 @@ app
 					if (foundKashir[index].makat == req.params.makat) {
 						return foundKashir[index].makat;
 					} else {
-						console.log(foundKashir[index].makat);
+						// console.log(foundKashir[index].makat);
 					}
 				});
 
@@ -126,7 +126,7 @@ app
 					) {
 						return foundKashir[index].makat;
 					} else {
-						console.log(foundKashir[index].makat);
+						// console.log(foundKashir[index].makat);
 					}
 				});
 				// console.log(makatAv);
@@ -140,12 +140,18 @@ app
 				const makatOverAllRE = removeUndefined(makatOverAll);
 				const makatAvRE = removeUndefined(makatAv);
 
-				console.log(makatAvRE);
-				console.log(makatOverAllRE);
+				// console.log(makatAvRE.length);
+				// console.log(makatOverAllRE.length);
+
+				const makatPr = Math.floor(
+					(makatAvRE.length / makatOverAllRE.length) * 100
+				);
+				// console.log(makatPr);
 				// ---------------------------- sending data --------------------------------------------------
 				res.send({
 					makatAvil: makatAvRE,
 					makatGdud: makatOverAllRE,
+					makatP: makatPr + "%",
 				});
 
 				//  ! ------------------------------- alternative --------------------------------------------------------------
@@ -179,7 +185,7 @@ app
 			}
 		});
 	});
-
+// * --------------------- dashboard -----------------------------------------
 app
 	.route("/:gdud")
 

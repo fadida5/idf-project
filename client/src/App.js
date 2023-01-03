@@ -5,8 +5,18 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import AddCarNumber from "./AddCarNumber";
 
 function App() {
+	// * ----------------------------- login -----------------------------------
 	const [userData, setUserData] = useState({});
+	// * ---------------------------- dashboard -------------------------------------
+	// const [CarNumbers, setCarNumbers] = useState({});
+	// const [Makats, setAllMakats] = useState({});
+	// const [AllKshirot, setAllKshirot] = useState({});
+	// const [makatKashir, setMakatKashir] = useState({});
+	// const [kshirotGdud, setKshirotGdud] = useState({});
+	// ------------------------------------ navigtion ------------------------------------
 	const history = useNavigate();
+
+	// * ---------------------------------- fetch for login -------------------------------
 
 	function usePernr(data) {
 		fetch("http://localhost:5000/login/" + data + "", {
@@ -30,6 +40,60 @@ function App() {
 		console.log(data);
 	}
 
+	// ! ----------- fetch for dashboard (gdud data) doesnt work for now ----------------------------------
+
+	// function useCarDatas(gdud) {
+	// 	let arg = "";
+	// 	if (userData.isManager === 1) {
+	// 		arg = "http://localhost:5000/";
+	// 	} else if (userData.isManager === 0) {
+	// 		arg = "http://localhost:5000/" + gdud + "";
+	// 	}
+	// 	fetch(arg, {
+	// 		method: "GET",
+	// 		// body: JSON.stringify(data),
+	// 		headers: {
+	// 			"Content-Type": "application.json",
+	// 		},
+	// 	})
+	// 		.then((res) => res.json())
+	// 		.then((item) => {
+	// 			console.log(item);
+	// 			// setCarData(item);
+	// 			setCarNumbers(item.carNumbers);
+	// 			setAllMakats(item.allMakats);
+	// 			setAllKshirot(item.allKshirot);
+	// 			console.log(item.carNumbers);
+	// 			console.log(item.allMakats);
+	// 			console.log(item.allKshirot);
+	// 		});
+	// }
+
+	// ! ------------------- fetch for kshirot (doesnt work for now) --------------------------------------
+
+	// function useMakatKashir(makat, kashir) {
+	// 	let url =
+	// 		"http://localhost:5000/kashirot/" +
+	// 		userData.gdud +
+	// 		"/" +
+	// 		makat +
+	// 		"/" +
+	// 		kashir +
+	// 		"";
+	// 	fetch(url, {
+	// 		method: "GET",
+	// 		headers: { "Content-Type": "application.json" },
+	// 	})
+	// 		.then((result) => result.json())
+	// 		.then((item) => {
+	// 			setMakatKashir(item.makatAvil);
+	// 			setKshirotGdud(item.makatGdud);
+	// 			console.log(item.makatAvil);
+	// 			console.log(item.makatGdud);
+	// 		});
+	// }
+
+	// * ------------------------- running the app -----------------------------------------------------------------
 	return (
 		<div>
 			<Routes>
@@ -39,7 +103,14 @@ function App() {
 				/>
 				<Route
 					path="/main"
-					element={<Dashboard user={userData} />}
+					element={
+						<Dashboard
+							user={userData}
+							// useCar={useCarDatas}
+							// allK={AllKshirot}
+							// allCarN={CarNumbers}
+						/>
+					}
 				/>
 				<Route
 					path="/add"
