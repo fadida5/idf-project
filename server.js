@@ -97,7 +97,7 @@ app
 		console.log(req.cache);
 	});
 
-//*---------------------------------------- Dashboard no menger page (kashirot) --------------------------------------------------
+//*---------------------------------------- Dashboard no meaneger page (kashirot) --------------------------------------------------
 
 app
 	.route("/kashirot/:gdud/:makat/:kashir")
@@ -185,7 +185,7 @@ app
 			}
 		});
 	});
-// * --------------------- dashboard -----------------------------------------
+// * --------------------- dashboard no maneger -----------------------------------------
 app
 	.route("/:gdud")
 
@@ -243,12 +243,73 @@ app
 		});
 	});
 
-// ! ------------------------------------------  landing ismaneger page --------------------------------------------------
+// * -----------------------------  dashboard ismaneger page --------------------------------------------------
 
 app
 	.route("/")
 
-	.get(function (req, res) {});
+	.get(function (req, res) {
+		carData.find({}, (err, foundCars) => {
+			if (err) {
+				console.log(err);
+			} else {
+				// console.log(req.params.type);
+
+				// * checking if getting all the carnumber in the gdud
+
+				/*
+
+				console.log(
+					foundCars.map((ele, index) => {
+						return foundCars[index].carNumber;
+					})
+				);
+
+				*/
+
+				// ---------------------------------------------------------------------------------------------------------------------------
+
+				// * getting all the makats in the gdud
+				let makat = foundCars.map((ele, index) => {
+					return foundCars[index].makat;
+				});
+
+				const makatFilterdN = removeDuplicates(makat);
+				const makatFilterd = makatFilterdN.map((num) => {
+					return String(num);
+				});
+
+				// getting all the gdudim under the maneger
+				const allgdud = foundCars.map((i, index) => {
+					return foundCars[index].gdud;
+				});
+
+				const allGF = removeDuplicates(allgdud);
+
+				// console.log(makatFilterd);
+
+				//* getting all the carnumber in the gdud
+				carNumbers = foundCars.map((ele, index) => {
+					return foundCars[index].carNumber;
+				});
+
+				// * --------------------- sending data ------------------------------------------------------------------------------------------------------
+
+				res.send({
+					carNumbers: foundCars.map((ele, index) => {
+						return foundCars[index].carNumber;
+					}),
+					allMakats: makatFilterd,
+
+					allKshirot: foundCars.map((ele, index) => {
+						return foundCars[index].kshirot;
+					}),
+					allGdud: allGF,
+				});
+			}
+		});
+	});
+
 // * ---------------------------------------- running server --------------------------------------------------
 
 app.listen(5000, function () {

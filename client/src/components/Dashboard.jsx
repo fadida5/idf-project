@@ -12,6 +12,7 @@ function Dashboard(props) {
 	const [makatKashir, setMakatKashir] = useState({});
 	const [kshirotGdud, setKshirotGdud] = useState({});
 	const [makatGdudKashirP, setMakatGdudKashirP] = useState([]);
+	const [gdudim, setGdudim] = useState([]);
 	const userData = props.user;
 	const history = useNavigate();
 
@@ -86,6 +87,9 @@ function Dashboard(props) {
 		}
 		const dataFetch = async () => {
 			const data = await (await fetch(arg)).json();
+			if (userData.isManager === 1) {
+				setGdudim(data.allGdud);
+			}
 			setCarNumbers(data.carNumbers);
 			setAllMakats(data.allMakats);
 			setAllKshirot(data.allKshirot);
