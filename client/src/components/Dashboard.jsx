@@ -102,10 +102,8 @@ function Dashboard(props) {
 
 	// * --------- waiting for the data using useEffect for kshirot ---------------
 
-	//! expermental kshirot pulling from client all kashirot p with one useEffect -----------------------------------------------------------------------------
-
-	// useEffect(() => {
-	// 	for (let index = 0; index < Makats.length; index++) {
+	// for (let index = 0; index < Makats.length; index++) {
+	// 	useEffect(() => {
 	// 		let url =
 	// 			"http://localhost:5000/kashirot/" +
 	// 			userData.gdud +
@@ -114,20 +112,47 @@ function Dashboard(props) {
 	// 			"/" +
 	// 			"1" +
 	// 			"";
-	// 		const fetchData = async () => {
-	// 			const data = await (await fetch(url)).json();
-	// 			setMakatKashir(data.makatAvil);
-	// 			setKshirotGdud(data.makatGdud);
-	// 			setMakatGdudKashirP(data.makatP);
-	// 			console.log(data.makatAvil);
-	// 			console.log(data.makatGdud);
-	// 		};
-	// 		fetchData();
-	// 	}
-	// }, [userData, Makats]);
-	// console.log("overall" + makatGdudKashirP);
-	// console.log(Makats.length);
-	// console.log(makatGdudKashirP.length);
+	// 			const fetchData = async () => {
+	// 				const data = await (await fetch(url)).json();
+	// 				setMakatKashir(data.makatAvil);
+	// 				setKshirotGdud(data.makatGdud);
+	// 				setMakatGdudKashirP(data.makatP);
+	// 				console.log(data.makatAvil);
+	// 				console.log(data.makatGdud);
+	// 			}
+	// 			fetchData()
+	// 	},[Makats,userData,index])
+		
+	// }
+
+	//! expermental kshirot pulling from client all kashirot p with one useEffect -----------------------------------------------------------------------------
+
+	useEffect(() => {
+		const makatPArray = [];
+		for (let index = 0; index < Makats.length; index++) {
+			let url =
+				"http://localhost:5000/kashirot/" +
+				userData.gdud +
+				"/" +
+				Makats[index] +
+				"/" +
+				"1" +
+				"";
+			const fetchData = async () => {
+				const data = await (await fetch(url)).json();
+				await setMakatKashir(data.makatAvil);
+				await setKshirotGdud(data.makatGdud);
+				await makatPArray.push(data.makatP)
+				await console.log(data.makatAvil);
+				await console.log(data.makatGdud);
+			};
+			fetchData();
+			setMakatGdudKashirP(makatPArray)
+		}
+	}, [userData, Makats]);
+	console.log("overall " + makatGdudKashirP);
+	console.log(Makats.length);
+	console.log(makatGdudKashirP.length);
 
 	//!expermental kshirot pulling from client all kashirot p with a for loop for the useEffect -----------------------------------------------------------------------------
 
@@ -135,7 +160,7 @@ function Dashboard(props) {
 
 	// useEffect(() => {
 	// 	let url =
-	// 		"http://localhost:5000/kashirot/" +
+	// 		"http://localhost:5000/kashirotarry/" +
 	// 		userData.gdud +
 	// 		"/" +
 	// 		Makats +
@@ -168,64 +193,66 @@ function Dashboard(props) {
 	// * ------------------- calculating percentage ---------------------------------
 	if (AllKshirot.length > 0) {
 		const allAvailable = AllKshirot.filter((item) => item === 1);
-		console.log(allAvailable.length);
-		console.log(AllKshirot.length);
+		// console.log(allAvailable.length);
+		// console.log(AllKshirot.length);
 		const kashirSum = AllKshirot.length - allAvailable.length;
-		console.log(kashirSum);
+		// console.log(kashirSum);
 
 		const kshirotAllP =
 			Math.floor((allAvailable.length / AllKshirot.length) * 100) + "%";
-		console.log(kshirotAllP);
-
+		// console.log(kshirotAllP);
 		// * ------------------- running the dashboard -----------------------------
-
-		return (
-			<div>
+		if (makatGdudKashirP.length  === Makats.length) {
+			return (
 				<div>
-					{userData.isManager === 1 ? (
-						<button onClick={carAdd}> add new car</button>
-					) : null}
-				</div>
-				<div>
-					<KshirotTable
-						// getCarNumberKshirot={props.useCar}
-						kashir={AllKshirot}
-						carNum={CarNumbers}
-					/>
-				</div>
-				<div>
-					<div /* //! will replace this with components when marging*/>
-						<label htmlFor="chart">
-							<h2>Percentage of tool avialabe</h2>
-							<p>{kshirotAllP}</p>
-						</label>
+					<div>
+						{userData.isManager === 1 ? (
+							<button onClick={carAdd}> add new car</button>
+						) : null}
 					</div>
 					<div>
-						<label htmlFor="chart">
-							<h2>Number of avialabe tools</h2>
-							<p>{allAvailable.length}</p>
-						</label>
+						<KshirotTable
+							// getCarNumberKshirot={props.useCar}
+							kashir={AllKshirot}
+							carNum={CarNumbers}
+						/>
 					</div>
 					<div>
-						<label htmlFor="chart">
-							<h2>string</h2>
-							<p /* to be filled */></p>
-						</label>
+						<div /* //! will replace this with components when marging*/>
+							<label htmlFor="chart">
+								<h2>Percentage of tool avialabe</h2>
+								<p>{kshirotAllP}</p>
+							</label>
+						</div>
+						<div>
+							<label htmlFor="chart">
+								<h2>Number of avialabe tools</h2>
+								<p>{allAvailable.length}</p>
+							</label>
+						</div>
+						<div>
+							<label htmlFor="chart">
+								<h2>string</h2>
+								<p /* to be filled */></p>
+							</label>
+						</div>
+						<KshirotChart
+							name="chart"
+							makats={Makats}
+							makatP={makatGdudKashirP}
+						/>
 					</div>
-					{/* <KshirotChart
-						name="chart"
-						makats={Makats}
-						makatP={makatGdudKashirP}
-					/> */}
+					<div>
+						<KshirotClock
+							avilP={allAvailable.length}
+							unavilP={kashirSum}
+						/>
+					</div>
 				</div>
-				<div>
-					<KshirotClock
-						avilP={allAvailable.length}
-						unavilP={kashirSum}
-					/>
-				</div>
-			</div>
-		);
+			);
+		} else {
+			<h1>Loding </h1>
+		}
 	} else {
 		return (
 			<div>

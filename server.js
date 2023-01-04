@@ -151,7 +151,7 @@ app
 				res.send({
 					makatAvil: makatAvRE,
 					makatGdud: makatOverAllRE,
-					makatP: makatPr + "%",
+					makatP: makatPr,
 				});
 
 				//  ! ------------------------------- alternative --------------------------------------------------------------

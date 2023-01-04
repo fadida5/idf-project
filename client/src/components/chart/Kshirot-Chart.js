@@ -59,7 +59,7 @@ export function KshirotChart(props) {
 		datasets: [
 			{
 				label: /*when passing as an function props.nameChart */ "kshirot gdud ",
-				data: labels.map(() => props.makatP({ min: 0, max: 100 })),
+				data: labels.map((i,index) => props.makatP[index]),
 				borderColor: "rgb(255, 99, 132)",
 				backgroundColor: "rgba(255, 99, 132, 0.5)",
 			},
