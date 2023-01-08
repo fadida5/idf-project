@@ -1,5 +1,6 @@
 import React from "react";
 import Column from "./Table-column";
+import classes from "./Kshirot.module.css";
 
 function KshirotTable(props) {
 	const kshirot = props.kashir;
@@ -22,17 +23,31 @@ and kshirot both arrays via props
 	// 	props.getCarNumberKshirot();
 	// } else {
 	return (
-		<div>
-			<tr>
-				<td>carNumber </td>
-				<td> kashirot</td>
-			</tr>
-			{kshirot.map((item, index) => (
-				<Column
-					items={tzdik[index]}
-					carStatus={isKashir(kshirot[index])}
-				/>
-			))}
+		<div className={classes.Htable}>
+			<div className="table-responsive-sm mb-0 p-0 border-0">
+				<table className="table table-sm table-dark table-bordered ">
+					<thead>
+						<tr>
+							<th scope="col">carNumber </th>
+							<th scope="col"> kashirot</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								{kshirot.map((item, index) => (
+									<Column items={tzdik[index]} />
+								))}
+							</td>
+							<td>
+								{kshirot.map((item, index) => (
+									<Column items={isKashir(kshirot[index])} />
+								))}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 	// }

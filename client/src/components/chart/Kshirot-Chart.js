@@ -9,7 +9,6 @@ import {
 	Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import faker from "faker";
 
 ChartJS.register(
 	CategoryScale,
@@ -22,14 +21,26 @@ ChartJS.register(
 
 export function KshirotChart(props) {
 	const options = {
+		color: "#ffffff",
 		responsive: true,
+		scales: {
+			y: {
+				ticks: { color: "#ffffff", beginAtZero: true },
+				grid: { color: "#ffffff", beginAtZero: true },
+			},
+			x: {
+				ticks: { color: "#ffffff", beginAtZero: true },
+				grid: { color: "#ffffff", beginAtZero: true },
+			},
+		},
 		plugins: {
 			legend: {
 				position: "top",
 			},
 			title: {
 				display: true,
-				text: "kshirot",
+				text: "kshirot " + props.gdudName,
+				color: "#ffffff",
 			},
 		},
 	};
@@ -58,10 +69,10 @@ export function KshirotChart(props) {
 		labels,
 		datasets: [
 			{
-				label: /*when passing as an function props.nameChart */ "kshirot gdud ",
-				data: labels.map((i,index) => props.makatP[index]),
-				borderColor: "rgb(255, 99, 132)",
-				backgroundColor: "rgba(255, 99, 132, 0.5)",
+				label: "kshirot",
+				data: labels.map((i, index) => props.makatP[index]),
+				borderColor: "rgb(45, 205, 223)",
+				backgroundColor: "rgb(108, 0, 255)",
 			},
 		],
 	};

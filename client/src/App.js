@@ -3,6 +3,7 @@ import Login from "../src/components/Login";
 import Dashboard from "./components/Dashboard";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import AddCarNumber from "./AddCarNumber";
+import "react-bootstrap";
 
 function App() {
 	// * ----------------------------- login -----------------------------------

@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const { application } = require("express");
 const { json } = require("body-parser");
 const Axios = require("axios").default;
+const http = require("http");
 
 // * mongoose database setup
 mongoose.connect("mongodb://127.0.0.1/finalProjectDB", {
@@ -14,6 +15,7 @@ mongoose.connect("mongodb://127.0.0.1/finalProjectDB", {
 // * setting modules
 mongoose.set("strictQuery", false);
 const app = express();
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public")); //create a public folder put inside every static page (CSS and pure html)
 
@@ -44,12 +46,13 @@ const carData = mongoose.model("carData", carDataSchema);
 
 const User = mongoose.model("User", userSchema);
 
-// const user = new User({
-// //schema...
-//    pernr: "",
-//    gdud: "",
-//    isManager :
-// });
+const user = new carData({
+	//schema...
+	carNumber: String,
+	makat: String,
+	kshirot: String,
+	gdud: String,
+});
 
 //----------------------------------------- helping functions --------------------------------------------------------------------------------------------
 
@@ -89,13 +92,57 @@ app
 // * ---------------------------------------- addCar page --------------------------------------------------
 
 app
+	// .route("/addcar/:carNumber/:gdud/:kshirot/:makat")
 	.route("/addcar")
-
-	.get(function (req, res) {})
-
-	.post((req, res) => {
-		console.log(req.cache);
+	.get(function (req, res) {
+		carData.find((er, foundCar) => {
+			if (er) {
+				console.log(er);
+			} else {
+				res.send(foundCar);
+			}
+		});
+	})
+	.post(function (req, res) {
+		// console.log(req.body.carNumber);
+		// console.log(req.body.gdud);
+		// console.log(req.body.kshirot);
+		// console.log(req.body.makat);
+		console.log(req.body);
+		const newCar = new carData({
+			carNumber: req.body.carNumber,
+			makat: req.body.makat,
+			kshirot: req.body.kshirot,
+			gdud: req.body.gdud,
+		});
+		newCar.save((err, newCar) => {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(newCar);
+				console.log("saved");
+				res.send(newCar);
+			}
+		});
 	});
+
+// !  -------------------- sending data via the url --------------------
+// .post(function (req, res) {
+// 	const newCar = new User({
+// 		carNumber: req.params.carNumber,
+// 		makat: req.params.makat,
+// 		kshirot: req.params.kshirot,
+// 		gdud: req.params.gdud,
+// 	});
+// 	newCar.save((err, newCar) => {
+// 		if (err) {
+// 			console.log(err);
+// 		} else {
+// 			console.log(newCar);
+// 			res.send(newCar);
+// 		}
+// 	});
+// });
 
 //*---------------------------------------- Dashboard no meaneger page (kashirot) --------------------------------------------------
 
